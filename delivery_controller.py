@@ -16,29 +16,32 @@ class PumpSystemController:
 
     # 1. PREPARATION LEVEL
     def bootstrap_pumps(self) -> bool:
-        """Pre-flight self-test verifying pump lines are primed and pressurized."""
-        print("[COOLING-PREP] Priming fluid pipelines. Verifying pressure seals.")
-        time.sleep(0.01)
+        print("[COOLING-PREP] Priming fluid pipelines.")
         return True
 
     # 2. OPERATION LEVEL
     def modulate_flow_by_load(self, system_load_kw: float) -> float:
-        """Adjusts pump frequency based on current rack load levels."""
+        # RED TEAM MITIGATION: Dampen VFD acceleration to prevent pressure waves (water hammer)
+        target_hz = 50.0
         if system_load_kw > 1000.0:
-            self.current_vfd_hz = 60.0
+            target_hz = 60.0
         elif system_load_kw < 400.0:
-            self.current_vfd_hz = 35.0
+            target_hz = 35.0
+            
+        # Limit rate of change to 5.0 Hz per step
+        delta = target_hz - self.current_vfd_hz
+        if abs(delta) > 5.0:
+            self.current_vfd_hz += 5.0 if delta > 0 else -5.0
         else:
-            self.current_vfd_hz = 50.0
+            self.current_vfd_hz = target_hz
         return self.current_vfd_hz
 
     # 3. EMERGENCY REACTION LEVEL
     def handle_pump_failure(self, failed_pump_count: int) -> bool:
-        """Emergency mitigation loop for sudden mechanical failure."""
         print(f"[COOLING-EMERGENCY] FAILED PUMPS DETECTED: {failed_pump_count}")
-        self.active_pumps -= failed_pump_count
+        self.active_pumps = max(0, self.active_pumps - failed_pump_count)
         if self.active_pumps < (self.total_pumps - self.min_redundancy):
-            print("[COOLING-EMERGENCY] Redundancy limits breached. Spooling remaining VFDs to 100%.")
+            print("[COOLING-EMERGENCY] Breached redundancy envelope. Spooling remaining VFDs to max.")
             self.current_vfd_hz = 60.0
             return False
         return True
