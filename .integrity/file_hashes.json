@@ -1,0 +1,32 @@
+{
+  "repo": "xai-colossus-cooling-omega",
+  "algorithm": "sha256",
+  "file_count": 25,
+  "hashes": {
+    "control_loop.py.sha256": "f69c00ca8bf096e370405264c8c20756e2184136300e56c8370a64889094ada3",
+    "README.md": "2976615f6e70cba6c3d553d58b8b1c2a316e398f008fc718d4d04d0c9d4a0603",
+    "EASTER_EGGS.md": "0c4fc58a6163b54497fc8327ec77f4293330eea4ba636e30db202836bd450900",
+    "delivery_controller.py": "b0350419d66bcbd00216d34f3f81ff0a582642bd487ae24458741cb3329cb699",
+    "control_loop.py": "74a027db23b3090a999b85eb44e962a7f7d6bd0539061bbe14b28a01c200a271",
+    "delivery_controller.py.sha256": "27099c89b31d32f2d08e324f9ed808d49032c589d8e54a1aee16438f178412b2",
+    "AKOS.md": "eae48200ee1bf2ec3fe2f267668b1dd09bac66f3bd2e01420e5787413f247a07",
+    "HELIX_STRAND.md": "6dc8e29f4f82444795da7a51aeaf81969ad2954684e3c15c94100725c09fa587",
+    "mastermind_sidecar.py": "222df25945c19ae55003c083156bd5362a7e307e617ff74f9ffac79c05d0d56f",
+    "SECURITY_AND_FLEET_OPS.md": "26141c0f07d95847d679de423ddb7bdee6f3e319d204383c89a58d6d3bb610c7",
+    "HELIX.md": "969ec1f915f9c9dfabbf5f3f659894f8fb446137afaf197bf6c88f01141ff360",
+    "tests/test_emergency.py.sha256": "809afeac05d40e79e8625833bccc62fc65cebd55c2c8e57c64bf8d2092dcea4b",
+    "tests/test_integration.py.sha256": "46f3c36a882a80c95b9e11e6067c6b4931e0df7ca5f3a44bae8fe5491d453b09",
+    "tests/test_emergency.py": "f9a8d9e3251529e2454dad1974a14ad561dd9d12c805576c9bbb2bdcbc02405c",
+    "tests/run_tests.py": "3860742701ed634a5746d8532bfdf9a1dda277ba59497882acb8a9abcd6b8802",
+    "tests/test_compaction.py": "376d215b833ee7626edc18701cfc2c9b59d461e406ace66c92d106357b7aa293",
+    "tests/test_flow_controller.py": "0f83c48b9a8e3a8a444ad138fac14c88b9e54974277400492bbda09f4667040a",
+    "tests/run_tests.py.sha256": "60c24365ccb050b5968da5b91200cf98a2e4172b118c272b22025fec2d0a0896",
+    "tests/test_nominal.py.sha256": "815eecada332ef12c945833490df9509e2934374140246e4caf1bce2f7fd1998",
+    "tests/test_integration.py": "97dc620146a5da36cc1a1f1146785fb30ea2189e54e72df69bf8d25c2b768aed",
+    "tests/.shadow_memory.json": "33b67128332708f9e8abad074fe1ba83b67f9387868fe4fe539e26374aa0aece",
+    "tests/test_nominal.py": "385fd7c2909cf632394c7eb4929a63918b5e2eb2f7a89ea4d71276133e36b97c",
+    "tests/test_compaction.py.sha256": "8907e9ef540119c3e07af35001ccc57e65c2f0e6649082be35d95adff70c8638",
+    ".github/workflows/ci.yml": "393542f8109cac2611d6ab41b8b062e6cc8be46894379568f15c0b7e2c1a639f",
+    "src/flow_controller.py": "fe0ac8d0b5c81fc40e4cadd32e75ba440d95430996d6c19e5f653df87c5887db"
+  }
+}
