@@ -1,54 +1,73 @@
-# xai-colossus-cooling-omega
+# Cooling Omega — Modeled Flow-Control Policy
 
-<!-- README-MESH:BEGIN -->
-## Three-audience project map
+A small stateful control-policy component that converts modeled temperature observations into bounded normalized flow decisions.
 
-### For recruiters and non-specialists
+> **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It does not claim proprietary Colossus data, facility access, live telemetry, or physical actuator authority.
 
-**What it does.** Adjusts coolant-flow behavior toward a target temperature using requirements produced by the separate Alpha thermal model.
+## Recruiter view
 
-- Shows how a calculated requirement becomes an operational response.
-- Keeps controller state and actuation separate from the underlying thermal equations.
-- Completes a clear computation-to-control loop with Cooling Alpha.
+The canonical public implementation is [`src/flow_controller.py`](src/flow_controller.py). It maintains a PID-like local state and produces normalized `0..1` flow outputs from caller-supplied temperature values.
 
-**Evidence:** [`src/flow_controller.py`](src/flow_controller.py) and [`tests/test_flow_controller.py`](tests/test_flow_controller.py).
+Current verified behavior:
 
-### For senior engineers and domain experts
+- computes proportional/integral/derivative-style response terms;
+- clamps integral state and output bounds;
+- returns deterministic modeled flow decisions for a supplied temperature sequence;
+- performs no network queries, telemetry reads, pump/valve commands, or external actions.
 
-**Innovation and evolution.** Omega owns the stateful response: feedback, actuation, and controller transitions. It consumes an independently testable thermal specification rather than recalculating requirements inside the controller. That boundary supports substitution, fault analysis, and separate release lifecycles. It evolved into the control half of the cooling helix, closing a loop from rack heat load through Alpha requirements to explicit flow decisions.
+The output is a **modeled controller decision**, not hardware actuation.
 
-### For AI systems and toolchains
+## Engineering boundary
 
-- Repository ID: `GlacierEQ/xai-colossus-cooling-omega`
-- Default branch: `master`
-- Protobuf package: `glaciereq.readme.v1`
-- Typed role: consumes Cooling Alpha requirements and emits stateful control decisions.
-- Canonical graph: [`manifests/readme_mesh.json`](https://github.com/GlacierEQ/job-app-helix/blob/main/manifests/readme_mesh.json)
-
-```protobuf
-repository: "GlacierEQ/xai-colossus-cooling-omega"
-display_name: "Colossus Cooling Omega"
-one_line_purpose: "Turn thermal requirements into explicit stateful coolant-flow control."
+```text
+caller-supplied temperature sequence
+              │
+              ▼
+       src/flow_controller.py
+              │
+              ▼
+ normalized local flow decisions (0..1)
 ```
 
-### Repository mesh
+Canonical proof paths:
 
-| Connected repository | Relationship | Combined value |
-|---|---|---|
-| [Cooling Alpha](https://github.com/GlacierEQ/xai-colossus-cooling-alpha) | consumes | The controller acts on independently computed thermal requirements. |
-| [AKOS](https://github.com/GlacierEQ/AKOS) | governed by | Control authority, evidence, and completion remain explicit. |
+| Path | Role |
+|---|---|
+| `src/flow_controller.py` | stateful bounded local control policy |
+| `tests/test_flow_controller.py` | deterministic response check |
+| `scripts/verify_public_core.py` | receipt-producing public verifier |
+| `.github/workflows/ci.yml` | exact-branch Python truth gate |
 
-Real schema: [`proto/readme_mesh.proto`](https://github.com/GlacierEQ/job-app-helix/blob/main/proto/readme_mesh.proto).
-<!-- README-MESH:END -->
+Older root-level experiments, integrity artifacts, and integration-oriented files remain preserved but are not automatically promoted by this contract.
 
-**Omega — how the system responds.** A stateful coolant-flow controller targeting a demonstration thermal set point.
+## Alpha / Omega relationship
 
-This is an independent xAI/Colossus problem-space project, not a claim of xAI employment, endorsement, proprietary data, or operational deployment.
+Omega is architecturally paired with [`xai-colossus-cooling-alpha`](https://github.com/GlacierEQ/xai-colossus-cooling-alpha). Alpha evaluates a thermal envelope; Omega models a stateful response. There is no claimed live cross-repository runtime, shared facility telemetry stream, or physical actuator connection.
 
-## Fleet ops (transparent)
+## Verify
 
-Integrity baselines and health sidecars, when present, are documented multi-repository operations. See [SECURITY_AND_FLEET_OPS.md](SECURITY_AND_FLEET_OPS.md).
+```bash
+python tests/test_flow_controller.py
+python scripts/verify_public_core.py
+```
 
-## Helix strand
+## Machine contract
 
-See [HELIX_STRAND.md](HELIX_STRAND.md) for the Alpha/Omega role.
+```yaml
+schema: glaciereq.component-surface.v1
+repository: GlacierEQ/xai-colossus-cooling-omega
+canonical_branch: master
+role: SPECIALIST_COMPONENT
+capability: modeled_flow_control_policy
+evidence_level: TEST
+external_queries: 0
+external_actions: 0
+live_telemetry: false
+hardware_actuation: false
+runtime_pairing_with_alpha: false
+company_affiliation_claim: false
+```
+
+## Nonclaims
+
+This repository does not establish xAI affiliation, proprietary access, production deployment, live Colossus telemetry, pump/valve/chiller actuation, physical-system safety, measured cooling efficiency, or validation at a specific GPU/MW/rack scale.
