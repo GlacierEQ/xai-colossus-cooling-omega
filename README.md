@@ -1,7 +1,17 @@
+<<<<<<< HEAD
 # Cooling Omega — Modeled Flow-Control Policy
+=======
+# xAI Colossus Cooling Omega — Secondary/Emergency Cooling Systems 🌊
+
+> **Backup and emergency thermal management with dry cooler failover and ambient cooling activation.**
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue)]()
+[![Domain](https://img.shields.io/badge/Domain-Emergency%20Cooling-cyan)]()
+>>>>>>> 19af744 (docs(readme): upgrade to 3-section recruiter/engineer/mesh structure & update SHA-256 baseline)
 
 A small stateful control-policy component that converts modeled temperature observations into bounded normalized flow decisions.
 
+<<<<<<< HEAD
 > **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It does not claim proprietary Colossus data, facility access, live telemetry, or physical actuator authority.
 
 ## Recruiter view
@@ -71,3 +81,47 @@ company_affiliation_claim: false
 ## Nonclaims
 
 This repository does not establish xAI affiliation, proprietary access, production deployment, live Colossus telemetry, pump/valve/chiller actuation, physical-system safety, measured cooling efficiency, or validation at a specific GPU/MW/rack scale.
+=======
+## 🎯 For Recruiters & Hiring Managers
+
+This is the **secondary and emergency cooling system** — the failover layer that activates when primary cooling degrades or fails. It demonstrates:
+
+- **Redundant system design** with automatic failover detection and activation
+- **Emergency shutdown sequences** for controlled GPU thermal throttling under cooling loss
+- **Dry cooler management** for ambient air cooling when chilled water is unavailable
+- **Health monitoring** of backup pumps, fans, and cooling tower capacity
+
+**Why this matters**: Emergency systems engineering requires the **highest reliability standards** — the same design discipline used in aviation backup systems, hospital power, and nuclear safety systems.
+
+---
+
+## 🔬 For Engineers & Technical Reviewers
+
+### Core Components
+
+| Component | Language | Purpose |
+|---|---|---|
+| `src/cooling_omega.py` | Python | Emergency controller, dry cooler management, failover FSM |
+| `tests/` | Python | Primary cooling failure scenarios with thermal cascade simulation |
+
+---
+
+## 🤖 ML/AI & Programmatic Mesh Integration
+
+- **MCP Tool**: `emergency_status()` — backup system readiness queryable by agents
+- **Mastermind Sidecar**: Publishes emergency alerts to APEX Highway mesh
+- **AI Extension**: Predictive failure model estimating time-to-thermal-emergency from degradation trends
+
+```python
+status = await mcp_client.call_tool("colossus-cooling-omega", "emergency_readiness")
+```
+
+---
+
+## ⚡ Quick Start
+
+```bash
+python3 src/cooling_omega.py
+python3 tests/test_cooling_omega.py
+```
+>>>>>>> 19af744 (docs(readme): upgrade to 3-section recruiter/engineer/mesh structure & update SHA-256 baseline)

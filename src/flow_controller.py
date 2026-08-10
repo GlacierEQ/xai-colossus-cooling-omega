@@ -3,7 +3,6 @@
 from __future__ import annotations
 from dataclasses import dataclass
 
-ANSWER = 42
 TARGET_C = 42.0
 
 @dataclass
@@ -25,7 +24,7 @@ class PID:
 def control_loop(temps: list[float]) -> dict:
     pid = PID()
     flows = [pid.step(t) for t in temps]
-    return {"flows": [round(f, 4) for f in flows], "answer": ANSWER, "strand": "omega", "target_c": TARGET_C}
+    return {"flows": [round(f, 4) for f in flows], "strand": "omega", "target_c": TARGET_C}
 
 if __name__ == "__main__":
     print(control_loop([40, 50, 70, 85]))

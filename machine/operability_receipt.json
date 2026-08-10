@@ -1,0 +1,28 @@
+{
+  "schema": "glaciereq.operability-receipt.v1",
+  "repository": "GlacierEQ/xai-colossus-cooling-omega",
+  "at": "2026-08-10T04:12Z",
+  "source_sha": "787f7288f85f53e40c28b0f750bccc013b542780368b3cd01e19a0a7d0424ffd",
+  "entry": "scripts/operate.py",
+  "primary_output": {
+    "module": "flow_controller",
+    "ok": true,
+    "repository": "GlacierEQ/xai-colossus-cooling-omega",
+    "smoke": {
+      "args": [
+        "[]"
+      ],
+      "content_checked": true,
+      "invoked": true,
+      "kind": "fn",
+      "name": "control_loop",
+      "result": {
+        "flows": [],
+        "strand": "omega",
+        "target_c": 42.0
+      }
+    }
+  },
+  "dual_run_ok": true,
+  "result": "PASS"
+}
