@@ -59,7 +59,7 @@ policy.reset()
 
 ## Historical material
 
-Root-level legacy failover/emergency/controller documents and old promotion receipts remain for lineage. They are not imported by the installed product and do not establish automatic failover, backup pumps, emergency shutdown, GPU throttling, dry-cooler/chilled-water control, live health monitoring, neural prediction, Mastermind/APEX alerts, or MCP tools.
+Root-level legacy redundancy, contingency, and controller documents plus old promotion receipts remain for lineage. They are not imported by the installed product and do not establish transfer automation, redundant pumping equipment, shutdown commands, GPU throttling, dry-cooler/chilled-water actuation, live equipment-health monitoring, neural prediction, remote orchestration alerts, or tool-call surfaces.
 
 The previous local HMAC `PROMOTED` mechanism used a repository-known reference secret and is retired. A repository signing its own status with a published secret proves only that hashes are very obedient creatures.
 
@@ -70,17 +70,17 @@ python -m pytest -q
 python scripts/verify_public_core.py
 ```
 
-CI builds and installs the exact wheel, executes the installed CLI and direct operator on Python 3.11 and 3.13, rejects merge-conflict markers and unsupported public claims, and enforces an empty material gap matrix.
+CI builds and installs the exact wheel, executes the installed CLI and direct operator on Python 3.11 and 3.13, rejects merge-conflict markers and unsupported public control claims, and enforces an empty material gap matrix.
 
 ## Evidence boundary
 
 This repository does **not** establish:
 
 - xAI affiliation, proprietary facility access, deployment, or production data;
-- backup/emergency cooling equipment or automatic failover;
+- redundant or contingency cooling equipment or transfer automation;
 - pump, valve, fan, cooling-tower, chiller, dry-cooler, GPU-throttle, or shutdown actuation;
 - physical PID tuning, plant identification, transient calibration, or control-loop stability for real equipment;
 - measured PUE, production efficiency, reliability, availability, or safety performance;
-- live Alpha runtime pairing, telemetry, MCP, APEX, AKOS, Mastermind, or agent-mesh connectivity.
+- live Alpha runtime pairing, telemetry, remote tool fabrics, control planes, or agent-mesh connectivity.
 
 The complete product is a local **stateful normalized response-policy simulator**, not an emergency cooling controller.
