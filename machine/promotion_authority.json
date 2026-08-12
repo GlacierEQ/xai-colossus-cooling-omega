@@ -1,11 +1,9 @@
 {
-  "schema": "glaciereq.promotion-authority-grant.v1",
+  "schema": "glaciereq.promotion-authority-retirement.v1",
   "repository": "GlacierEQ/xai-colossus-cooling-omega",
-  "source_sha": "787f7288f85f53e40c28b0f750bccc013b542780368b3cd01e19a0a7d0424ffd",
-  "proof_receipt_digest": "949b2609572ab22520a49f50a3d685c4c67fe693ff7a86ed863b408d6257ff8f",
-  "not_after": 1788927149.234226,
-  "mac": "a96596099cae665fe161446a455b58b464eea2e1de1029ef16140f4867f609ab",
-  "issuer": "local_operator_promotion_authority",
-  "verified": true,
-  "secret_ref": "src/promotion_authority.py::LOCAL_OPERATOR_SECRET"
+  "status": "RETIRED",
+  "authoritative": false,
+  "reason": "The historical grant was generated with a repository-known local HMAC secret and therefore cannot serve as independent promotion authority.",
+  "historical_source_sha": "787f7288f85f53e40c28b0f750bccc013b542780368b3cd01e19a0a7d0424ffd",
+  "replacement": "exact-head behavioral proof plus source-bound crystallization completion receipt"
 }

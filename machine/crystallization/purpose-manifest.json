@@ -1,0 +1,10 @@
+{
+  "schema": "glaciereq.crystallization-purpose.v1",
+  "repository": "GlacierEQ/xai-colossus-cooling-omega",
+  "canonical_purpose": "Provide an installable deterministic local stateful response-policy simulator that maps modeled temperature error and optional numeric requirement feedforward into a bounded normalized cooling-demand fraction.",
+  "consumers": ["developers", "reviewers", "local infrastructure simulations", "architectural Cooling Alpha data producer"],
+  "natural_runtime": "installable local Python library and CLI",
+  "naturally_deployable": false,
+  "deployment_reason": "Facility telemetry and physical actuation would require plant identification, tuning, hardware authority, and safety evidence outside this local simulation purpose.",
+  "evidence_state": "LOCAL_STATEFUL_COOLING_RESPONSE_POLICY_NOT_XAI_HARDWARE_CONTROL"
+}

@@ -1,22 +1,24 @@
 {
-  "schema": "glaciereq.repo-target-contract.v1",
+  "schema": "glaciereq.repo-target-contract.v2",
   "identity": {
     "repository_id": "GlacierEQ/xai-colossus-cooling-omega",
-    "family": "elite-estate"
+    "family": "local-stateful-response-policy",
+    "purpose": "simulate a bounded stateful normalized cooling-demand response around caller-supplied temperature observations and optional numeric feedforward requirements"
   },
   "current": {
-    "state": "PROMOTED",
+    "state": "FUNCTIONAL_CRYSTALLIZATION_CANDIDATE",
     "implemented": true,
-    "tested": true,
-    "deployed": false
+    "terminal_current_head_verified": false,
+    "deployed": false,
+    "naturally_deployable": false
   },
+  "evidence_state": "LOCAL_STATEFUL_COOLING_RESPONSE_POLICY_NOT_XAI_HARDWARE_CONTROL",
+  "completion_rule": "CRYSTALLIZED only after exact-head tests prove policy state/term math, derivative-kick suppression, adversarial refusal, data-only requirement feedforward, installable CLI, direct operability, public truth, and zero local-purpose gaps, followed by a source-bound completion receipt whose carrying head re-passes the same matrix.",
   "nonclaims": [
-    "no employer affiliation",
-    "no production deployment without receipt"
-  ],
-  "donor_plan": {
-    "mode": "none",
-    "donors": []
-  },
-  "frozen_at": "2026-08-10T04:12Z"
+    "no xAI affiliation, facility access, proprietary data, or deployment",
+    "no automatic failover, backup/emergency cooling, or hardware actuation",
+    "no physical PID tuning, plant identification, calibrated stability, or safety certification",
+    "no measured PUE, efficiency, availability, or production reliability",
+    "no live Alpha runtime pairing, telemetry, MCP/APEX/AKOS/Mastermind connectivity"
+  ]
 }

@@ -1,11 +1,11 @@
-# SPDX-License-Identifier: Proprietary
-# Copyright (c) 2026 Casey del Carpio Barton
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from flow_controller import simulate
 
-from delivery_controller import PumpSystemController
-def test_nominal():
-    ctrl = PumpSystemController()
-    hz = ctrl.modulate_flow_by_load(500.0)
-    assert hz == 50.0
-    print("  [PASS] Nominal delivery controller pump frequency successful.")
+
+def test_nominal_simulation_is_local_and_deterministic_shape() -> None:
+    result = simulate([40.0, 43.0, 46.0], feedforward_fraction=0.5)
+    assert len(result["steps"]) == 3
+    assert result["hardware_actuation"] is False
+    assert result["runtime_pairing_with_alpha"] is False
+    assert result["external_queries"] == 0
+    assert result["external_actions"] == 0
+    assert len(result["digest"]) == 64

@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "glaciereq-cooling-omega"
+version = "1.0.0"
+description = "Independent stateful normalized thermal-response policy simulator"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+cooling-omega-simulate = "cooling_omega_cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["flow_controller", "cooling_omega_cli"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "."]

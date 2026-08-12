@@ -1,0 +1,16 @@
+{
+  "schema": "glaciereq.crystallization-capabilities.v1",
+  "capabilities": [
+    {"id":"validated_stateful_response_policy","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_flow_controller.py","tests/test_adversarial.py"]},
+    {"id":"derivative_kick_suppression","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_flow_controller.py"]},
+    {"id":"bounded_integral_state","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_flow_controller.py"]},
+    {"id":"explicit_term_and_saturation_receipts","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_flow_controller.py","tests/test_emergency.py"]},
+    {"id":"reset_and_state_inspection","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_flow_controller.py"]},
+    {"id":"data_only_alpha_requirement_feedforward","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_flow_controller.py","tests/test_integration.py"]},
+    {"id":"deterministic_simulation_receipt","state":"WORKING","implementation_paths":["src/flow_controller.py"],"verification":["tests/test_compaction.py"]},
+    {"id":"installable_product","state":"WORKING","implementation_paths":["pyproject.toml","src/cooling_omega_cli.py"],"verification":[".github/workflows/ci.yml"]},
+    {"id":"direct_operability","state":"WORKING","implementation_paths":["scripts/operate.py"],"verification":["tests/test_integration.py"]},
+    {"id":"public_truth_boundary","state":"WORKING","implementation_paths":["README.md","scripts/verify_public_core.py"],"verification":[".github/workflows/ci.yml"]},
+    {"id":"legacy_promotion_theater_retired","state":"WORKING","implementation_paths":["machine/promotion_authority.json","machine/excellence-state.json"],"verification":["tests/test_promotion_authority.py"]}
+  ]
+}

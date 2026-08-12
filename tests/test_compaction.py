@@ -1,12 +1,8 @@
-# SPDX-License-Identifier: Proprietary
-# Copyright (c) 2026 Casey del Carpio Barton
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from flow_controller import simulate
 
-from control_loop import TelemetryLoop
-def test_compaction():
-    loop = TelemetryLoop()
-    for _ in range(5):
-        loop.run_dynamic_lumped_log(45.0)
-    assert loop.nominal_lump_count == 5
-    print("  [PASS] Log compaction: 5 nominal cycles lumped successfully.")
+
+def test_simulation_receipt_is_deterministic() -> None:
+    first = simulate([40.0, 43.0, 46.0], feedforward_fraction=0.5)
+    second = simulate([40.0, 43.0, 46.0], feedforward_fraction=0.5)
+    assert first == second
+    assert first["digest"] == second["digest"]

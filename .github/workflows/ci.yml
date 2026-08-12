@@ -1,4 +1,4 @@
-name: Cooling Omega Public Truth Gate
+name: Cooling Omega Product + Truth Gate
 
 on:
   push:
@@ -12,32 +12,60 @@ permissions:
 jobs:
   verify:
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.13"]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - name: Assert exact source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="${{ github.event.pull_request.head.sha || github.sha }}"
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$expected"
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Compile bounded core
-        run: python -m py_compile src/flow_controller.py tests/test_flow_controller.py scripts/verify_public_core.py
-      - name: Verify bounded public core
-        run: python scripts/verify_public_core.py
-      - name: Verify public truth boundary
+      - name: Test complete product behavior
+        run: |
+          python -m pip install --upgrade pip setuptools wheel pytest
+          python -m pytest -q
+      - name: Build and install exact product
+        run: |
+          rm -rf dist build *.egg-info src/*.egg-info
+          python -m pip wheel . --no-deps -w dist
+          python -m pip install --force-reinstall dist/*.whl
+          cooling-omega-simulate --compact > /tmp/cooling-omega.json
+          python - <<'PY'
+          import json
+          data = json.load(open('/tmp/cooling-omega.json'))
+          assert len(data['steps']) == 5
+          assert data['hardware_actuation'] is False
+          assert data['runtime_pairing_with_alpha'] is False
+          assert all(0 <= value <= 1 for value in data['outputs'])
+          assert len(data['digest']) == 64
+          PY
+      - name: Execute direct operability and public truth
+        run: |
+          python scripts/operate.py > /tmp/operate.json
+          python scripts/verify_public_core.py
+      - name: Enforce crystallization and conflict-free public surface
         run: |
           python - <<'PY'
+          import json
           from pathlib import Path
-          text = Path('README.md').read_text(encoding='utf-8')
-          required = [
-              'Independent portfolio project',
-              'modeled_flow_control_policy',
-              'hardware_actuation: false',
-              'runtime_pairing_with_alpha: false',
-          ]
-          missing = [item for item in required if item not in text]
-          if missing:
-              raise SystemExit(f'README truth boundary missing: {missing}')
+          readme = Path('README.md').read_text()
+          assert '<<<<<<<' not in readme and '=======' not in readme and '>>>>>>>' not in readme
+          caps = json.loads(Path('machine/crystallization/capability-manifest.json').read_text())
+          gaps = json.loads(Path('machine/crystallization/gap-matrix.json').read_text())
+          assert caps['capabilities']
+          assert all(row['state'] == 'WORKING' for row in caps['capabilities'])
+          assert gaps['gaps'] == []
           PY
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
