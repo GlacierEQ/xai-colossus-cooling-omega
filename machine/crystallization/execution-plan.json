@@ -1,0 +1,8 @@
+{
+  "naturally_deployable": false,
+  "test_commands": [["python", "-m", "pytest", "-q"]],
+  "build_commands": [["python", "-m", "pip", "wheel", ".", "--no-deps", "-w", "dist"]],
+  "runtime_commands": [["cooling-omega-simulate", "--compact"], ["python", "scripts/operate.py"]],
+  "truth_commands": [["python", "scripts/verify_public_core.py"]],
+  "deployment_reason": "Local response-policy simulator; facility attachment requires separate telemetry, plant model, tuning, hardware authority, and safety evidence."
+}

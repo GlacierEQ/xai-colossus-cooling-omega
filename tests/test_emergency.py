@@ -1,15 +1,9 @@
-# SPDX-License-Identifier: Proprietary
-# Copyright (c) 2026 Casey del Carpio Barton
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from flow_controller import ResponsePolicy
 
-from delivery_controller import PumpSystemController
-from control_loop import TelemetryLoop
-def test_emergency():
-    ctrl = PumpSystemController()
-    assert ctrl.handle_pump_failure(3) == False
-    loop = TelemetryLoop()
-    loop.initialize_telemetry_links()
-    loop.trigger_emergency_shutdown(85.0)
-    assert loop.running == False
-    print("  [PASS] Emergency pump backup spools and shutdown loops validated.")
+
+def test_extreme_heat_saturates_modeled_output_without_emergency_action() -> None:
+    result = ResponsePolicy().step(100.0)
+    assert result["output_fraction"] == 1.0
+    assert "SATURATED_HIGH" in result["reasons"]
+    assert result["hardware_actuation"] is False
+    assert result["external_actions"] == 0

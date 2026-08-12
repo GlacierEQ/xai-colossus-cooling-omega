@@ -1,31 +1,7 @@
 {
-  "schema": "glaciereq.proof-receipt.v1",
+  "schema": "glaciereq.proof-receipt.v2",
   "repository": "GlacierEQ/xai-colossus-cooling-omega",
-  "source_sha": "787f7288f85f53e40c28b0f750bccc013b542780368b3cd01e19a0a7d0424ffd",
-  "proof_id": "elite-xai-colossus-cooling-omega-1786335149",
-  "environment": {
-    "python": "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python",
-    "PYTHONPATH": "/Users/kcbflux/job-app/repos/xai-colossus-cooling-omega:/Users/kcbflux/job-app/repos/xai-colossus-cooling-omega/src",
-    "entry": "unittest"
-  },
-  "tests": [
-    "/Users/kcbflux/job-app/excellence/.venv-elite/bin/python -m unittest discover -s tests -v (x2)"
-  ],
-  "adversarial_tests": [
-    "tests/test_adversarial.py"
-  ],
-  "runtime": {
-    "operate": "scripts/operate.py (x2)",
-    "dual_run_ok": true,
-    "proof_dual_run_ok": true
-  },
-  "result": "PASS",
-  "limitations": [
-    "not production deployed",
-    "reference implementation only"
-  ],
-  "timestamp": "2026-08-10T04:12Z",
-  "artifact_hashes": {
-    "operability_receipt": "43bfaf9209c38f31f717ce37af328150b18a8ab9690e8c08665d253f0cb00f62"
-  }
+  "status": "HISTORICAL_RECEIPT_SUPERSEDED",
+  "reason": "Prior proof predates the complete stateful response-policy product and depended on the retired local promotion authority.",
+  "replacement": "machine/crystallization/completion-receipt.json after exact-head product proof"
 }

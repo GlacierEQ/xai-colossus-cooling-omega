@@ -1,1 +1,20 @@
-{"capabilities": ["hyper-scaling"]}
+{
+  "schema": "glaciereq.repository-capabilities.v2",
+  "repository": "GlacierEQ/xai-colossus-cooling-omega",
+  "status": "FUNCTIONAL_CRYSTALLIZATION_CANDIDATE",
+  "evidence_state": "LOCAL_STATEFUL_COOLING_RESPONSE_POLICY_NOT_XAI_HARDWARE_CONTROL",
+  "capabilities": [
+    "validated-stateful-response-policy",
+    "first-sample-derivative-kick-suppression",
+    "bounded-integral-state",
+    "explicit-p-i-d-term-receipts",
+    "normalized-output-saturation-semantics",
+    "reset-and-state-inspection",
+    "data-only-alpha-requirement-feedforward",
+    "deterministic-simulation-receipt",
+    "installable-local-library-and-cli",
+    "direct-local-operability",
+    "fail-closed-public-truth-verification"
+  ],
+  "terminal_status_requires": "exact-head Python 3.11/3.13 behavior, package, installed CLI, direct runtime, truth verification, empty gap matrix, and source-bound completion receipt"
+}

@@ -1,127 +1,86 @@
-<<<<<<< HEAD
-# Cooling Omega — Modeled Flow-Control Policy
-=======
-# xAI Colossus Cooling Omega — Secondary/Emergency Cooling Systems 🌊
+# Cooling Omega — Stateful Thermal Response Policy
 
-> **Backup and emergency thermal management with dry cooler failover and ambient cooling activation.**
+**Installable, deterministic local response-policy simulation for converting modeled temperature error into a bounded normalized cooling-demand fraction.**
 
-[![Python](https://img.shields.io/badge/Python-3.9+-blue)]()
-[![Domain](https://img.shields.io/badge/Domain-Emergency%20Cooling-cyan)]()
->>>>>>> 19af744 (docs(readme): upgrade to 3-section recruiter/engineer/mesh structure & update SHA-256 baseline)
+> **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It has no facility telemetry, pump/valve/chiller access, emergency authority, or physical-system safety role.
 
-A small stateful control-policy component that converts modeled temperature observations into bounded normalized flow decisions.
+Evidence state: `LOCAL_STATEFUL_COOLING_RESPONSE_POLICY_NOT_XAI_HARDWARE_CONTROL`
 
-<<<<<<< HEAD
-> **Independent portfolio project.** This repository is not affiliated with, endorsed by, employed by, or deployed at xAI. It does not claim proprietary Colossus data, facility access, live telemetry, or physical actuator authority.
+## What the product does
 
-## Recruiter view
+The canonical product is `src/flow_controller.py`. It implements a transparent stateful response policy:
 
-The canonical public implementation is [`src/flow_controller.py`](src/flow_controller.py). It maintains a PID-like local state and produces normalized `0..1` flow outputs from caller-supplied temperature values.
+- explicit target temperature and P/I/D gains;
+- finite-input validation and strict `dt > 0` refusal;
+- first-sample derivative suppression so the initial observation does not manufacture derivative kick;
+- bounded integral state with anti-windup clamp;
+- explicit proportional, integral, derivative, feedforward, raw, and clamped output terms;
+- deterministic saturation/review reasons and SHA-256 decision receipts;
+- reset and state-inspection semantics;
+- normalized output bounded to `[0, 1]`, representing **modeled cooling-demand fraction**, not a hardware command;
+- optional caller-supplied Alpha-style requirement feedforward, computed only from `required_flow_lpm / design_flow_lpm` supplied as numbers. No cross-repository import, network call, or live runtime pairing occurs.
 
-Current verified behavior:
+The historical `PID` class and `control_loop()` function remain compatibility surfaces. Their values are still local modeled outputs, never actuator commands.
 
-- computes proportional/integral/derivative-style response terms;
-- clamps integral state and output bounds;
-- returns deterministic modeled flow decisions for a supplied temperature sequence;
-- performs no network queries, telemetry reads, pump/valve commands, or external actions.
+## Alpha / Omega boundary
 
-The output is a **modeled controller decision**, not hardware actuation.
+Cooling Alpha answers: **what steady-state flow requirement follows from a modeled heat load and temperature-rise envelope?**
 
-## Engineering boundary
+Cooling Omega answers: **how could a bounded stateful response policy adjust normalized demand around a caller-provided baseline as modeled temperature changes?**
 
-```text
-caller-supplied temperature sequence
-              │
-              ▼
-       src/flow_controller.py
-              │
-              ▼
- normalized local flow decisions (0..1)
+A caller may transform an Alpha-style requirement into Omega feedforward with:
+
+```python
+from flow_controller import feedforward_from_requirement
+fraction = feedforward_from_requirement(required_flow_lpm=48000, design_flow_lpm=60000)
 ```
 
-Canonical proof paths:
+That arithmetic bridge is intentionally data-only. `runtime_pairing_with_alpha: false` remains part of every product receipt.
 
-| Path | Role |
-|---|---|
-| `src/flow_controller.py` | stateful bounded local control policy |
-| `tests/test_flow_controller.py` | deterministic response check |
-| `scripts/verify_public_core.py` | receipt-producing public verifier |
-| `.github/workflows/ci.yml` | exact-branch Python truth gate |
+## Install and run
 
-Older root-level experiments, integrity artifacts, and integration-oriented files remain preserved but are not automatically promoted by this contract.
+```bash
+python -m pip install .
+cooling-omega-simulate --temperatures 40,43,46,44,41 --feedforward 0.50
+python scripts/operate.py
+```
 
-## Alpha / Omega relationship
+## Python API
 
-Omega is architecturally paired with [`xai-colossus-cooling-alpha`](https://github.com/GlacierEQ/xai-colossus-cooling-alpha). Alpha evaluates a thermal envelope; Omega models a stateful response. There is no claimed live cross-repository runtime, shared facility telemetry stream, or physical actuator connection.
+```python
+from flow_controller import PolicyConfig, ResponsePolicy
+
+policy = ResponsePolicy(PolicyConfig(target_c=42.0))
+receipt = policy.step(46.0, dt=1.0, feedforward_fraction=0.5)
+print(receipt["output_fraction"])
+print(policy.state())
+policy.reset()
+```
+
+## Historical material
+
+Root-level legacy failover/emergency/controller documents and old promotion receipts remain for lineage. They are not imported by the installed product and do not establish automatic failover, backup pumps, emergency shutdown, GPU throttling, dry-cooler/chilled-water control, live health monitoring, neural prediction, Mastermind/APEX alerts, or MCP tools.
+
+The previous local HMAC `PROMOTED` mechanism used a repository-known reference secret and is retired. A repository signing its own status with a published secret proves only that hashes are very obedient creatures.
 
 ## Verify
 
 ```bash
-python tests/test_flow_controller.py
+python -m pytest -q
 python scripts/verify_public_core.py
 ```
 
-## Machine contract
+CI builds and installs the exact wheel, executes the installed CLI and direct operator on Python 3.11 and 3.13, rejects merge-conflict markers and unsupported public claims, and enforces an empty material gap matrix.
 
-```yaml
-schema: glaciereq.component-surface.v1
-repository: GlacierEQ/xai-colossus-cooling-omega
-canonical_branch: master
-role: SPECIALIST_COMPONENT
-capability: modeled_flow_control_policy
-evidence_level: TEST
-external_queries: 0
-external_actions: 0
-live_telemetry: false
-hardware_actuation: false
-runtime_pairing_with_alpha: false
-company_affiliation_claim: false
-```
+## Evidence boundary
 
-## Nonclaims
+This repository does **not** establish:
 
-This repository does not establish xAI affiliation, proprietary access, production deployment, live Colossus telemetry, pump/valve/chiller actuation, physical-system safety, measured cooling efficiency, or validation at a specific GPU/MW/rack scale.
-=======
-## 🎯 For Recruiters & Hiring Managers
+- xAI affiliation, proprietary facility access, deployment, or production data;
+- backup/emergency cooling equipment or automatic failover;
+- pump, valve, fan, cooling-tower, chiller, dry-cooler, GPU-throttle, or shutdown actuation;
+- physical PID tuning, plant identification, transient calibration, or control-loop stability for real equipment;
+- measured PUE, production efficiency, reliability, availability, or safety performance;
+- live Alpha runtime pairing, telemetry, MCP, APEX, AKOS, Mastermind, or agent-mesh connectivity.
 
-This is the **secondary and emergency cooling system** — the failover layer that activates when primary cooling degrades or fails. It demonstrates:
-
-- **Redundant system design** with automatic failover detection and activation
-- **Emergency shutdown sequences** for controlled GPU thermal throttling under cooling loss
-- **Dry cooler management** for ambient air cooling when chilled water is unavailable
-- **Health monitoring** of backup pumps, fans, and cooling tower capacity
-
-**Why this matters**: Emergency systems engineering requires the **highest reliability standards** — the same design discipline used in aviation backup systems, hospital power, and nuclear safety systems.
-
----
-
-## 🔬 For Engineers & Technical Reviewers
-
-### Core Components
-
-| Component | Language | Purpose |
-|---|---|---|
-| `src/cooling_omega.py` | Python | Emergency controller, dry cooler management, failover FSM |
-| `tests/` | Python | Primary cooling failure scenarios with thermal cascade simulation |
-
----
-
-## 🤖 ML/AI & Programmatic Mesh Integration
-
-- **MCP Tool**: `emergency_status()` — backup system readiness queryable by agents
-- **Mastermind Sidecar**: Publishes emergency alerts to APEX Highway mesh
-- **AI Extension**: Predictive failure model estimating time-to-thermal-emergency from degradation trends
-
-```python
-status = await mcp_client.call_tool("colossus-cooling-omega", "emergency_readiness")
-```
-
----
-
-## ⚡ Quick Start
-
-```bash
-python3 src/cooling_omega.py
-python3 tests/test_cooling_omega.py
-```
->>>>>>> 19af744 (docs(readme): upgrade to 3-section recruiter/engineer/mesh structure & update SHA-256 baseline)
+The complete product is a local **stateful normalized response-policy simulator**, not an emergency cooling controller.

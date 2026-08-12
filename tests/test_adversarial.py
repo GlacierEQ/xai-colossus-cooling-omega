@@ -1,154 +1,39 @@
 from __future__ import annotations
-import importlib
-import inspect
-import unittest
-import sys
-from pathlib import Path
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT))
-sys.path.insert(0, str(ROOT / "src"))
 
-class AdversarialEliteTests(unittest.TestCase):
-    def _load(self):
-        errors = []
-        for name in ('flow_controller', "src." + 'flow_controller'):
-            try:
-                return importlib.import_module(name)
-            except Exception as e:
-                errors.append(f"{name}: {e}")
-        self.fail("; ".join(errors))
+import pytest
 
-    def test_module_importable(self):
-        mod = self._load()
-        public = [n for n in dir(mod) if not n.startswith("_")]
-        self.assertGreater(len(public), 0, "module exposes no public names")
+from flow_controller import PolicyConfig, ResponsePolicy, feedforward_from_requirement, simulate
 
-    def test_refuse_bad_import_path_does_not_shadow(self):
-        with self.assertRaises(ModuleNotFoundError):
-            importlib.import_module("src.__elite_does_not_exist_" + 'flow_controller')
 
-    def test_central_mechanism_refuse_or_edge(self):
-        """Exercise shipped refuse/edge paths when present; never crash open."""
-        mod = self._load()
-        exercised = False
+def test_non_finite_temperature_refuses() -> None:
+    with pytest.raises(ValueError, match="temperature_c_must_be_finite"):
+        ResponsePolicy().step(float("nan"))
 
-        # plan(connector, action) refuse nonsense connector
-        for cname, cls in inspect.getmembers(mod, inspect.isclass):
-            if cname.startswith("_"):
-                continue
-            # include re-exported central classes (not pure stdlib typing)
-            mname = getattr(cls, "__module__", None) or ""
-            if mname.startswith("typing") or mname in {"builtins", "collections", "pathlib", "json", "sys", "os"}:
-                continue
-            if getattr(mod, cname, None) is not cls and mname not in {mod.__name__, getattr(mod, "__package__", None)}:
-                continue
-            try:
-                sig = inspect.signature(cls)
-                if any(
-                    p.default is inspect.Parameter.empty and p.name != "self"
-                    and p.kind not in (p.VAR_POSITIONAL, p.VAR_KEYWORD)
-                    for p in sig.parameters.values()
-                ):
-                    continue
-                inst = cls()
-            except Exception:
-                continue
-            plan = getattr(inst, "plan", None)
-            if callable(plan):
-                try:
-                    out = plan("__elite_no_such_connector__", "delete")
-                    self.assertIsNotNone(out)
-                    if isinstance(out, dict):
-                        # refuse should not silently allow destructive unknown work
-                        allowed = out.get("allowed")
-                        if allowed is True:
-                            self.assertTrue(
-                                out.get("human_approved") is True
-                                or out.get("status") in {"REFUSED", "DENIED", "ERROR", "UNKNOWN"},
-                                f"plan allowed unknown connector: {out!r}",
-                            )
-                        exercised = True
-                    else:
-                        exercised = True
-                except Exception as e:
-                    # hard fail-closed is acceptable refuse
-                    exercised = True
-                    self.assertIsInstance(e, Exception)
-            # authorize/decide refuse
-            for meth in ("authorize", "decide", "check"):
-                fn = getattr(inst, meth, None)
-                if not callable(fn):
-                    continue
-                try:
-                    ps = inspect.signature(fn)
-                    req = [
-                        p for p in ps.parameters.values()
-                        if p.name != "self" and p.default is inspect.Parameter.empty
-                        and p.kind not in (p.VAR_POSITIONAL, p.VAR_KEYWORD)
-                    ]
-                    if req:
-                        continue
-                    out = fn()
-                    self.assertIsNotNone(out)
-                    exercised = True
-                except TypeError:
-                    continue
-                except Exception:
-                    exercised = True
 
-        # module-level schedule([]) / health edges
-        sched = getattr(mod, "schedule", None)
-        if callable(sched):
-            try:
-                out = sched([], 1.0)
-                self.assertIsInstance(out, dict)
-                self.assertIn("plan", out)
-                exercised = True
-            except TypeError:
-                try:
-                    out = sched([])
-                    self.assertIsNotNone(out)
-                    exercised = True
-                except Exception:
-                    exercised = True
-            except Exception:
-                exercised = True
+def test_non_positive_dt_refuses_instead_of_dividing_by_epsilon() -> None:
+    with pytest.raises(ValueError, match="dt_must_be_positive"):
+        ResponsePolicy().step(45.0, dt=0.0)
+    with pytest.raises(ValueError, match="dt_must_be_positive"):
+        ResponsePolicy().step(45.0, dt=-1.0)
 
-        for edge_fn, args in (
-            ("anomaly_score", (1e9,)),
-            ("thermal_margin", (-40.0,)),
-            ("simulate_rack", (0, 0.0)),
-        ):
-            fn = getattr(mod, edge_fn, None)
-            if not callable(fn):
-                continue
-            try:
-                out = fn(*args)
-                self.assertIsNotNone(out)
-                exercised = True
-            except Exception:
-                exercised = True
 
-        # metrics / efficiency attributes on zero-arg engines
-        for cname, cls in inspect.getmembers(mod, inspect.isclass):
-            if cname.startswith("_"):
-                continue
-            try:
-                inst = cls()
-            except Exception:
-                continue
-            metrics = getattr(inst, "metrics", None)
-            if isinstance(metrics, dict) and metrics:
-                self.assertIn(next(iter(metrics)), metrics)
-                exercised = True
-                break
+def test_bad_feedforward_refuses() -> None:
+    with pytest.raises(ValueError, match="feedforward_fraction_must_be_between_zero_and_one"):
+        ResponsePolicy().step(45.0, feedforward_fraction=1.1)
 
-        if not exercised:
-            # last resort: public API still rejects nonsense attribute assignment theater
-            public = [n for n in dir(mod) if not n.startswith("_")]
-            self.assertGreater(len(public), 0)
-            with self.assertRaises((AttributeError, TypeError, ImportError, ValueError, KeyError)):
-                getattr(mod, "__elite_missing_surface__")
 
-if __name__ == "__main__":
-    unittest.main()
+def test_bad_config_refuses() -> None:
+    with pytest.raises(ValueError, match="gains_must_be_non_negative"):
+        ResponsePolicy(PolicyConfig(kp=-0.1))
+
+
+def test_bad_flow_bridge_refuses() -> None:
+    with pytest.raises(ValueError, match="required_flow_lpm_must_be_non_negative"):
+        feedforward_from_requirement(-1.0, 10.0)
+    with pytest.raises(ValueError, match="design_flow_lpm_must_be_positive"):
+        feedforward_from_requirement(1.0, 0.0)
+
+
+def test_empty_simulation_refuses() -> None:
+    with pytest.raises(ValueError, match="temperatures_required"):
+        simulate([])
