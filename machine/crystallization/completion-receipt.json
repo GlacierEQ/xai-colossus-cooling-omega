@@ -1,0 +1,53 @@
+{
+  "schema": "glaciereq.crystallization-completion-receipt.v1",
+  "repository": "GlacierEQ/xai-colossus-cooling-omega",
+  "status": "CRYSTALLIZED",
+  "verified_source_head": "cd0d611a022eaf152f778521ab007910b4374724",
+  "canonical_purpose": "Provide an installable deterministic local stateful response-policy simulator that maps modeled temperature error and optional numeric requirement feedforward into a bounded normalized cooling-demand fraction.",
+  "evidence_state": "LOCAL_STATEFUL_COOLING_RESPONSE_POLICY_NOT_XAI_HARDWARE_CONTROL",
+  "capabilities": {
+    "material_count": 11,
+    "implemented_count": 11,
+    "verified_count": 11,
+    "remaining_gap_count": 0
+  },
+  "proof": {
+    "workflow_run_id": 31646272391,
+    "conclusion": "success",
+    "python_3_11": {"job_id": 94280449917, "conclusion": "success"},
+    "python_3_13": {"job_id": 94280450452, "conclusion": "success"},
+    "proved": [
+      "stateful response-policy behavior and adversarial refusal",
+      "first-sample derivative-kick suppression",
+      "bounded integral state and reset semantics",
+      "explicit P/I/D/feedforward term receipts",
+      "normalized saturation semantics",
+      "data-only Alpha-style requirement feedforward with no live runtime pairing",
+      "deterministic simulation receipts",
+      "installable wheel build",
+      "installed cooling-omega-simulate CLI execution",
+      "direct local operability",
+      "conflict-free strengthened public truth surface",
+      "legacy repository-known HMAC promotion authority retired",
+      "all crystallization capabilities WORKING",
+      "empty material gap matrix"
+    ]
+  },
+  "build": "PASS",
+  "tests": "PASS",
+  "runtime": "PASS",
+  "truth_verification": "PASS",
+  "legacy_promotion_authority": "RETIRED",
+  "deployment": {
+    "status": "NOT_APPLICABLE",
+    "reason": "The complete product is a local normalized response-policy simulator. Facility telemetry and physical actuation require separate plant identification, tuning, hardware authority, and safety evidence."
+  },
+  "truth_boundary": [
+    "No xAI affiliation, proprietary facility access, deployment, or production data is established.",
+    "No redundant or contingency cooling equipment, transfer automation, or hardware actuation is established.",
+    "No physical PID tuning, plant identification, calibrated stability, or safety certification is established.",
+    "No measured PUE, production efficiency, reliability, or availability claim is established.",
+    "No live Alpha runtime pairing, telemetry, remote tool fabric, control plane, or agent-mesh connectivity is established."
+  ],
+  "receipt_head_rule": "This receipt is terminal only if the commit carrying it re-passes the exact Python 3.11/3.13 product and truth matrix and remains fresh against canonical master immediately before merge."
+}
